@@ -1,0 +1,10 @@
+#!/bin/sh
+
+rm -rf app/code/community/Retailred/Storefront
+
+rm     app/design/frontend/base/default/layout/retailred_storefront.xml
+rm -rf app/design/frontend/base/default/template/retailred_storefront
+
+rm -rf app/etc/modules/Retailred_Storefront.xml
+
+rm     src/app/locale/de_DE/Retailred_Storefront.csv

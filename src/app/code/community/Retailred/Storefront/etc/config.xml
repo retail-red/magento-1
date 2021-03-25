@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Retailred_Storefront>
+            <version>1.0.0</version>
+            <depends>
+                <Mage_Catalog />
+            </depends>
+        </Retailred_Storefront>
+    </modules>
+    <global>
+        <blocks>
+            <retailred_storefront>
+                <class>Retailred_Storefront_Block</class>
+            </retailred_storefront>
+        </blocks>
+        <helpers>
+            <retailred_storefront>
+                <class>Retailred_Storefront_Helper</class>
+            </retailred_storefront>
+        </helpers>
+        <models>
+            <retailred_storefront>
+                <class>Retailred_Storefront_Model</class>
+            </retailred_storefront>
+        </models>
+    </global>
+    <default>
+        <retailred_storefront>
+            <api>
+                <apiKey />
+                <apiStage>staging</apiStage>
+                <unitSystem>metric</unitSystem>
+                <countries>de</countries>
+            </api>
+            <general>
+                <render>reserveButton</render>
+                <renderMode>modal</renderMode>
+                <inventoryHideNumber>no</inventoryHideNumber>
+                <inventoryHideNumber>no</inventoryHideNumber>
+                <inventoryShowExactUntil />
+                <inventoryShowLowUntil>5</inventoryShowLowUntil>
+                <termsLink />
+                <privacyLink />
+            </general>
+            <design>
+                <colors><![CDATA[
+/* Primary color used for form elements and buttons */
+--color-primary: 25, 121, 195;
+/* Color used for links */
+--color-link: 60, 155, 181;
+/* Color used for alerting texts like errors */
+--color-state-alarm : 176, 0, 32;
+/* Color used for highlighting problems like low stock */
+--color-state-warning: 241, 156, 69;
+/* Color used for positive highlighting like successful reservation text. */
+--color-state-success: 50, 172, 92;
+                ]]></colors>
+                <translations />
+            </design>
+        </retailred_storefront>
+    </default>
+    <frontend>
+        <layout>
+            <updates>
+                <retailred_storefront>
+                    <file>retailred_storefront.xml</file>
+                </retailred_storefront>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <retailred_storefront>
+                    <files>
+                        <default>Retailred_Storefront.csv</default>
+                    </files>
+                </retailred_storefront>
+            </modules>
+        </translate>
+    </frontend>
+</config>

@@ -1,0 +1,54 @@
+<?php
+
+use Retailred_Storefront_Model_Config as Config;
+
+/** @var Retailred_Storefront_Helper_Data $helper */
+$helper = $this->helper('retailred_storefront');
+
+if ($helper->getConfig(Config::XML_PATH_GENERAL_RENDER) === Config::RENDER_DISABLED) {
+    return;
+}
+
+?>
+
+<style type="text/css">
+    .rr-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    #rr-reserve-button {
+        flex-grow: 1;
+    }
+
+    #rr-live-inventory {
+        flex-grow: 1;
+        margin-top: 12px;
+    }
+
+    #rr-omni-reserve-button {
+        width: 100%;
+        line-height: 2.2rem;
+    }
+
+    #rr-omni #rr-omni-custom, #rr-omni-reserve-button {
+    <?= $helper->getConfig(Config::XML_PATH_DESIGN_COLORS) ?>
+    }
+</style>
+
+<div class="rr-wrapper">
+    <div id="rr-reserve-button"></div>
+    <div id="rr-live-inventory"></div>
+</div>
+
+<script type="text/javascript">
+  (
+    function ($) {
+      $(document).ready(function () {
+        $('.rr-wrapper').insertAfter('.add-to-cart');
+      });
+    }
+  )
+  (jQuery);
+</script>

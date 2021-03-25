@@ -7,8 +7,6 @@
 .idea
 .vscode
 
-.DS_Store
-
 node_modules
 
 /PATCH_*.sh
@@ -124,6 +122,7 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 vendor
+web
 /src/app/design/frontend/rwd
 /src/lib
 
@@ -131,8 +130,3 @@ release/magento
 release/magento1702.zip
 shopgate_omnichannel-*.tgz
 composer.lock
-package-lock.json
-
-/bin
-# gitlub runner
-builds
