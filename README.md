@@ -14,7 +14,7 @@ The script adds a “reserve” button to the product detail page, via which a n
 
 ### Install via Magento Connect Manager
 
-- Download the latest package release
+- Download the latest package release (`tar` format, please check your Magento Connect version to support other formats)
 - Navigate to `System > Magento Connect > Magento Connect Manager`
 - Go to `Direct package file upload` section and Upload the package
 - Press 'Install' button to install this extension

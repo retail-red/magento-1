@@ -11,11 +11,11 @@
     <stability>stable</stability>
     <notes>Retailred Storefront Module</notes>
     <authors>
-        <name>
+        <author>
             <name>Shopgate GmbH</name>
             <user>Shopgate</user>
             <email>interfaces@shopgate.com</email>
-        </name>
+        </author>
     </authors>
     <depends_php_min>5.6.0</depends_php_min>
     <contents>
