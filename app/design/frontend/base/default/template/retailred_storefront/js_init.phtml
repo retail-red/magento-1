@@ -1,0 +1,178 @@
+<?php
+
+use Retailred_Storefront_Model_Config as Config;
+
+/** @var Retailred_Storefront_Helper_Data $helper */
+$helper = $this->helper('retailred_storefront');
+
+if ($helper->getConfig(Config::XML_PATH_GENERAL_RENDER) === Config::RENDER_DISABLED) {
+    return;
+}
+
+/** @var Retailred_Storefront_Helper_Data $helper */
+$customer = $helper->getCustomer();
+
+$isLiveInventory = $helper->getConfig(Config::XML_PATH_GENERAL_RENDER) === Config::RENDER_LIVE_INVENTORY;
+$liveInventoryMode = $helper->getConfig(Config::XML_PATH_GENERAL_RENDER_MODE);
+?>
+
+<script type='text/javascript' src='https://cdn.retail.red/omni/retailred-storefront-library-v1.js'></script>
+<script type="text/javascript">
+  (
+    function ($) {
+      $(document).ready(function () {
+        var $addToCartForm = $('#product_addtocart_form');
+
+        function getSelectedProduct () {
+          var formData = $addToCartForm.serializeArray();
+          var formField = function (fieldName) {
+            return formData.filter(function (field) {
+              return field.name === fieldName;
+            })[0];
+          };
+
+          var options = [];
+          var variantId;
+          if (typeof spConfig !== 'undefined' && spConfig.config.attributes) {
+            // Compute options from selection
+            options = Object.keys(spConfig.config.attributes).map(function (attributeId) {
+              var attrValue = formField('super_attribute[' + attributeId + ']').value;
+              var values = spConfig.config.attributes[attributeId].options.filter(function (v) {
+                return v.id == attrValue;
+              });
+              return {
+                option: spConfig.config.attributes[attributeId],
+                value: values[0] || '',
+              };
+            });
+
+            variantId = options.map(function (entry) {
+              return entry.value;
+            })
+              .reduce(function (acc, value) {
+                // Init with products from first option
+                if (acc === null) {
+                  acc = value.products || [];
+                } else {
+                  // Remove products that don't match with the current value products
+                  acc = acc.filter(function (variantId) {
+                    return (value.products || []).indexOf(variantId) !== -1;
+                  });
+                }
+                return acc;
+              }, null)
+              .reduce(function (r, variantId) {
+                return variantId || '';
+              }, null);
+          }
+
+          var id = formField('product').value;
+          var qty = formField('qty').value;
+
+          var $productView = $('.main .product-view');
+          return {
+            code: variantId || id,
+            imageUrl: $productView.find('.gallery-image.visible').attr('src'),
+            name: $productView.find('.product-name:first').text().trim(),
+            options: options.map(function (opt) {
+              return {
+                name: opt.option.label,
+                value: opt.value.label,
+              };
+            }),
+            price: parseFloat($productView.find('.price-box .special-price:first, .price-box .regular-price:first').text().replace(',', '.').replace(/[^.\d]/g, '')),
+            quantity: Number(qty),
+            currencyCode: <?= json_encode($helper->getCurrencyCode()) ?>
+          };
+        }
+
+        function initRetailred () {
+          try {
+            var localization;
+            try {
+              localization = JSON.parse('<?= $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS) ?>');
+              if (!localization || typeof localization !== 'object') {
+                localization = {};
+              }
+            } catch (err) {
+              localization = {};
+            }
+            localization.localeCode = <?= json_encode($helper->getLocaleCode()) ?>;
+            localization.countries = <?= json_encode(explode(',', $helper->getConfig(Config::XML_PATH_API_COUNTRIES))) ?>;
+
+            var retailred = window.RetailRedStorefront.create({
+              apiKey: '<?= $helper->getConfig(Config::XML_PATH_API_APIKEY) ?>',
+              apiStage: '<?= $helper->getConfig(Config::XML_PATH_API_API_STAGE) ?>',
+              unitSystem: '<?= $helper->getConfig(Config::XML_PATH_API_UNIT_SYSTEM) ?>',
+              localization: localization,
+              inventory: {
+                hideNumber: <?= $helper->getConfig(Config::XML_PATH_GENERAL_INVENTORY_HIDE_NUMBER) === 'yes' ? 'true' : 'false' ?>,
+                showExactUntil: <?= $helper->getConfig(Config::XML_PATH_GENERAL_INVENTORY_SHOW_EXACT_UNTIL) ?: 'null' ?>,
+                showLowUntil: <?= $helper->getConfig(Config::XML_PATH_GENERAL_INVENTORY_SHOW_LOW_UNTIL) ?: 'null' ?>
+              },
+              legal: {
+                terms: <?= $helper->getConfig(Config::XML_PATH_GENERAL_TERMS_LINK) ?: 'null' ?>,
+                privacy: <?= $helper->getConfig(Config::XML_PATH_GENERAL_PRIVACY_LINK) ?: 'null' ?>,
+              },
+              customer: {
+                code: <?= json_encode($customer->getId()) ?>,
+                firstName: <?= json_encode($customer->getFirstname()) ?>,
+                lastName: <?= json_encode($customer->getLastname()) ?>,
+                phone: null,
+                emailAddress: null,
+              },
+              product: getSelectedProduct(),
+              templates: {
+                customTemplates: {
+                  reserveButton: '<button id="rr-omni-reserve-button" class="button btn-cart">{{t "reserveButton.title" }}</button>'
+                }
+              }
+            });
+
+            function updateProduct() {
+              retailred.updateConfig({
+                product:  getSelectedProduct(),
+              });
+            }
+
+            $addToCartForm.find('input[name=qty]').change(function () {
+              retailred.updateConfig({
+                product: {
+                  quantity: Number($(this).val()),
+                },
+              });
+            });
+
+              <?php if (!$isLiveInventory) : ?>
+            retailred.renderReserveButton('#rr-reserve-button', {}, function (next) {
+              var valid = false;
+              if (typeof productAddToCartFormOld !== 'undefined') {
+                // replaced by product_addtocart_form_from_popup
+                valid = productAddToCartFormOld.validator.validate();
+              } else {
+                valid = productAddToCartForm.validator.validate();
+              }
+              if (valid) {
+                updateProduct();
+                next();
+              }
+            });
+              <?php endif; ?>
+
+              <?php if ($isLiveInventory) : ?>
+            retailred.renderLiveInventory('#rr-live-inventory', {
+              variant: '<?= $liveInventoryMode ?>'
+            });
+              <?php endif; ?>
+
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        initRetailred();
+      });
+    }
+  )
+  (jQuery);
+</script>

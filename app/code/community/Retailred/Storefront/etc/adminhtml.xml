@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<config>
+  <acl>
+    <resources>
+      <admin>
+        <children>
+          <system>
+            <children>
+              <config>
+                <children>
+                  <retailred_storefront translate="Configuration" module="Retailred_Storefront">
+                    <title>Configuration</title>
+                    <sort_order>110</sort_order>
+                  </retailred_storefront>
+                </children>
+              </config>
+            </children>
+          </system>
+        </children>
+      </admin>
+    </resources>
+  </acl>
+</config>
+

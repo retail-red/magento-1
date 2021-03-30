@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <retailred_storefront translate="label" module="retailred_storefront">
+            <label>Retail.red</label>
+            <sort_order>900</sort_order>
+        </retailred_storefront>
+    </tabs>
+    <sections>
+        <retailred_storefront translate="label" module="retailred_storefront">
+
+            <label>Configuration</label>
+            <class>separator-top</class>
+            <tab>retailred_storefront</tab>
+            <sort_order>110</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+
+            <groups>
+                <api translate="label" module="retailred_storefront">
+                    <label>Plugin &amp; Storefront configuration</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+
+                    <fields>
+                        <apiKey translate="label tooltip" module="retailred_storefront">
+                            <label>Storefront API Key</label>
+                            <frontend_type>password</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </apiKey>
+
+                        <apiStage translate="label tooltip" module="retailred_storefront">
+                            <label>Storefront Stage</label>
+                            <sort_order>2</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>retailred_storefront/source_apistage</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </apiStage>
+
+                        <unitSystem translate="label tooltip" module="retailred_storefront">
+                            <label>Units</label>
+                            <sort_order>3</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>retailred_storefront/source_unitsystem</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </unitSystem>
+
+                        <countries translate="label tooltip" module="retailred_storefront">
+                            <label>Countries</label>
+                            <sort_order>4</sort_order>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>retailred_storefront/source_countries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </countries>
+                    </fields>
+                </api>
+                <general translate="label" module="retailred_storefront">
+                    <label>Configuration</label>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+
+                    <fields>
+                        <render translate="label">
+                            <label>Display on product detail page</label>
+                            <sort_order>1</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>retailred_storefront/source_render</source_model>
+                            <comment><![CDATA[
+                                Choose what should be displayed on the product detail page. <br/>
+                                Reservation button - A button that opens a popup with a store list and the availability of the selected product in these stores. <br/>
+                                Availability in store - A box that directly shows the availability of the product in the store.
+                                The customer has to select a store the first time.
+                            ]]></comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </render>
+
+                        <renderMode translate="label">
+                            <label>Store selection</label>
+                            <sort_order>2</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>retailred_storefront/source_rendermode</source_model>
+                            <comment><![CDATA[
+                                Only relevant if "Show availability in store" is selected above. Choose how the customer can select his store. <br/>
+                                Modal - Opens a popup where the customer can search for his store via zip code or geolocation.
+                                Also shows address, distance and opening hours if available. <br/>
+                                Dropdown - A simple dropdown where the customer can choose the store from. Recommended only for small amount of stores.
+                            ]]></comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </renderMode>
+
+                        <inventoryHideNumber translate="label comment" module="retailred_storefront">
+                            <label>Hide stock</label>
+                            <sort_order>3</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </inventoryHideNumber>
+
+                        <inventoryShowExactUntil translate="label comment" module="retailred_storefront">
+                            <label>Show exact inventory until</label>
+                            <sort_order>4</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <comment>If inventory is higher than the given number the inventory will be displayed as "X+ Available"</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </inventoryShowExactUntil>
+
+                        <inventoryShowLowUntil translate="label comment" module="retailred_storefront">
+                            <label>Show low inventory until</label>
+                            <sort_order>5</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <comment>If inventory is lower than the given number the inventory will be displayed in the state-warning color</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </inventoryShowLowUntil>
+
+                        <termsLink translate="label comment" module="retailred_storefront">
+                            <label>Terms Link</label>
+                            <sort_order>6</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <comment>Add an url to the terms and condition page, also enforces the user to accept them before placing an reservation</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </termsLink>
+
+                        <privacyLink translate="label comment" module="retailred_storefront">
+                            <label>Privacy Link</label>
+                            <sort_order>7</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <comment>Add an url to the privacy page, also enforces the user to accept them before placing an reservation</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </privacyLink>
+                    </fields>
+                </general>
+                <design translate="label" module="retailred_storefront">
+                    <label>Design &amp; UI</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+
+                    <fields>
+                        <colors translate="label">
+                            <label>Colors</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment>Please use only the 3 numbers of rgb schema. rgb(1,2,3) -> 1,2,3</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </colors>
+                        <translations translate="label">
+                            <label>Translations JSON</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment>JSON format. All strings can be found in the github repo</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </translations>
+                    </fields>
+                </design>
+            </groups>
+        </retailred_storefront>
+    </sections>
+</config>
