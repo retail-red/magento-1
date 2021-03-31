@@ -14,6 +14,11 @@ $customer = $helper->getCustomer();
 
 $isLiveInventory = $helper->getConfig(Config::XML_PATH_GENERAL_RENDER) === Config::RENDER_LIVE_INVENTORY;
 $liveInventoryMode = $helper->getConfig(Config::XML_PATH_GENERAL_RENDER_MODE);
+
+$terms = $helper->getConfig(Config::XML_PATH_GENERAL_TERMS_LINK);
+$privacy = $helper->getConfig(Config::XML_PATH_GENERAL_PRIVACY_LINK);
+
+$localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
 ?>
 
 <script type='text/javascript' src='https://cdn.retail.red/omni/retailred-storefront-library-v1.js'></script>
@@ -88,15 +93,12 @@ $liveInventoryMode = $helper->getConfig(Config::XML_PATH_GENERAL_RENDER_MODE);
 
         function initRetailred () {
           try {
-            var localization;
-            try {
-              localization = JSON.parse('<?= $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS) ?>');
-              if (!localization || typeof localization !== 'object') {
-                localization = {};
-              }
-            } catch (err) {
-              localization = {};
-            }
+            <?php if (!$localization) : ?>
+            var localization = {};
+            <?php else : ?>
+            var localization = <?= $localization ?>;
+            <?php endif; ?>
+
             localization.localeCode = <?= json_encode($helper->getLocaleCode()) ?>;
             localization.countries = <?= json_encode(explode(',', $helper->getConfig(Config::XML_PATH_API_COUNTRIES))) ?>;
 
@@ -111,8 +113,8 @@ $liveInventoryMode = $helper->getConfig(Config::XML_PATH_GENERAL_RENDER_MODE);
                 showLowUntil: <?= $helper->getConfig(Config::XML_PATH_GENERAL_INVENTORY_SHOW_LOW_UNTIL) ?: 'null' ?>
               },
               legal: {
-                terms: <?= $helper->getConfig(Config::XML_PATH_GENERAL_TERMS_LINK) ?: 'null' ?>,
-                privacy: <?= $helper->getConfig(Config::XML_PATH_GENERAL_PRIVACY_LINK) ?: 'null' ?>,
+                terms: <?= $terms ? json_encode($terms) : 'null' ?>,
+                privacy: <?= $privacy ? json_encode($privacy): 'null' ?>,
               },
               customer: {
                 code: <?= json_encode($customer->getId()) ?>,
