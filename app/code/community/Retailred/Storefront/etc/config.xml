@@ -32,12 +32,14 @@
                 <apiStage>staging</apiStage>
                 <unitSystem>metric</unitSystem>
                 <countries>de</countries>
+                <browserHistory>1</browserHistory>
+                <useGeolocationImmediately>1</useGeolocationImmediately>
+                <testMode>0</testMode>
             </api>
             <general>
                 <render>reserveButton</render>
                 <renderMode>modal</renderMode>
-                <inventoryHideNumber>no</inventoryHideNumber>
-                <inventoryHideNumber>no</inventoryHideNumber>
+                <inventoryHideNumber>0</inventoryHideNumber>
                 <inventoryShowExactUntil />
                 <inventoryShowLowUntil>5</inventoryShowLowUntil>
                 <termsLink />

@@ -19,6 +19,7 @@ $terms = $helper->getConfig(Config::XML_PATH_GENERAL_TERMS_LINK);
 $privacy = $helper->getConfig(Config::XML_PATH_GENERAL_PRIVACY_LINK);
 
 $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
+
 ?>
 
 <script type='text/javascript' src='https://cdn.retail.red/omni/retailred-storefront-library-v1.js'></script>
@@ -105,10 +106,13 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
             var retailred = window.RetailRedStorefront.create({
               apiKey: '<?= $helper->getConfig(Config::XML_PATH_API_APIKEY) ?>',
               apiStage: '<?= $helper->getConfig(Config::XML_PATH_API_API_STAGE) ?>',
+              useGeolocationImmediately: <?= $helper->getConfig(Config::XML_PATH_API_USE_GEOLOCATION_IMMEDIATELY) === '1' ? 'true' : 'false' ?>,
+              browserHistory: <?= $helper->getConfig(Config::XML_PATH_API_BROWSER_HISTORY) === '1' ? 'true' : 'false' ?>,
+              testMode: <?= $helper->getConfig(Config::XML_PATH_API_TEST_MODE) === '1' ? 'true' : 'false' ?>,
               unitSystem: '<?= $helper->getConfig(Config::XML_PATH_API_UNIT_SYSTEM) ?>',
               localization: localization,
               inventory: {
-                hideNumber: <?= $helper->getConfig(Config::XML_PATH_GENERAL_INVENTORY_HIDE_NUMBER) === 'yes' ? 'true' : 'false' ?>,
+                hideNumber: <?= $helper->getConfig(Config::XML_PATH_GENERAL_INVENTORY_HIDE_NUMBER) === '1' ? 'true' : 'false' ?>,
                 showExactUntil: <?= $helper->getConfig(Config::XML_PATH_GENERAL_INVENTORY_SHOW_EXACT_UNTIL) ?: 'null' ?>,
                 showLowUntil: <?= $helper->getConfig(Config::XML_PATH_GENERAL_INVENTORY_SHOW_LOW_UNTIL) ?: 'null' ?>
               },
