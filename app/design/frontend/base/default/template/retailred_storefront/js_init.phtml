@@ -78,9 +78,12 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
 
           var $productView = $('.main .product-view');
           return {
-            code: products[variantId || id],
+            code: products[variantId || id].number,
             imageUrl: $productView.find('.gallery-image.visible').attr('src'),
             name: $productView.find('.product-name:first').text().trim(),
+            identifiers: {
+              sku: products[variantId || id].sku,
+            },
             options: options.map(function (opt) {
               return {
                 name: opt.option.label,

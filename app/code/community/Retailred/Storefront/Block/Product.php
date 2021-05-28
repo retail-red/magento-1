@@ -36,17 +36,23 @@ class Retailred_Storefront_Block_Product extends Mage_Core_Block_Template
         $product = Mage::registry('current_product');
 
         $products = [
-            $product->getEntityId() => $productCode === Retailred_Storefront_Model_Source_Productcodemapping::ID
-            ? $product->getEntityId()
-            : $product->getSku()
+            $product->getEntityId() => [
+                'sku' => $product->getSku(),
+                'number' => $productCode === Retailred_Storefront_Model_Source_Productcodemapping::ID
+                    ? $product->getEntityId()
+                    : $product->getSku()
+            ]
         ];
 
         if ($product->getTypeId() === 'configurable') {
-            $childProducts = Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null,$product);
+            $childProducts = Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null, $product);
             foreach ($childProducts as $child) {
-                $products[$child->getEntityId()] = $productCode === Retailred_Storefront_Model_Source_Productcodemapping::ID
-                    ? $child->getEntityId()
-                    : $child->getSku();
+                $products[$child->getEntityId()] = [
+                    'sku' => $child->getSku(),
+                    'number' => $productCode === Retailred_Storefront_Model_Source_Productcodemapping::ID
+                        ? $child->getEntityId()
+                        : $child->getSku()
+                ];
             }
         }
 
