@@ -86,8 +86,12 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
             },
             options: options.map(function (opt) {
               return {
+                code: opt.option.code || opt.option.id,
                 name: opt.option.label,
-                value: opt.value.label,
+                value: {
+                  code: opt.value.code || opt.value.id,
+                  name: opt.value.label
+                }
               };
             }),
             price: parseFloat($productView.find('.price-box .special-price:first, .price-box .regular-price:first').text().replace(',', '.').replace(/[^.\d]/g, '')),
