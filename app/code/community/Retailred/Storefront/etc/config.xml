@@ -32,6 +32,7 @@
                 <apiStage>staging</apiStage>
                 <unitSystem>metric</unitSystem>
                 <countries>de</countries>
+                <productCodeMapping>sku</productCodeMapping>
                 <browserHistory>1</browserHistory>
                 <useGeolocationImmediately>1</useGeolocationImmediately>
                 <testMode>0</testMode>

@@ -25,6 +25,7 @@ class Retailred_Storefront_Model_Config
     const XML_PATH_API_API_STAGE = 'retailred_storefront/api/apiStage';
     const XML_PATH_API_UNIT_SYSTEM = 'retailred_storefront/api/unitSystem';
     const XML_PATH_API_COUNTRIES = 'retailred_storefront/api/countries';
+    const XML_PATH_API_PRODUCT_CODE_MAPPING = 'retailred_storefront/api/productCodeMapping';
     const XML_PATH_API_BROWSER_HISTORY = 'retailred_storefront/api/browserHistory';
     const XML_PATH_API_USE_GEOLOCATION_IMMEDIATELY = 'retailred_storefront/api/useGeolocationImmediately';
     const XML_PATH_API_TEST_MODE = 'retailred_storefront/api/testMode';
