@@ -37,6 +37,7 @@ class Retailred_Storefront_Model_Config
     const XML_PATH_GENERAL_INVENTORY_SHOW_LOW_UNTIL = 'retailred_storefront/general/inventoryShowLowUntil';
     const XML_PATH_GENERAL_TERMS_LINK = 'retailred_storefront/general/termsLink';
     const XML_PATH_GENERAL_PRIVACY_LINK = 'retailred_storefront/general/privacyLink';
+    const XML_PATH_GENERAL_PRODUCT_IDENTIFIERS = 'retailred_storefront/general/productIdentifiers';
 
     const XML_PATH_DESIGN_COLORS = 'retailred_storefront/design/colors';
     const XML_PATH_DESIGN_TRANSLATIONS = 'retailred_storefront/design/translations';

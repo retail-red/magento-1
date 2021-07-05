@@ -45,6 +45,7 @@
                 <inventoryShowLowUntil>5</inventoryShowLowUntil>
                 <termsLink />
                 <privacyLink />
+                <productIdentifiers>ean,isbn</productIdentifiers>
             </general>
             <design>
                 <colors><![CDATA[
@@ -64,6 +65,16 @@
         </retailred_storefront>
     </default>
     <frontend>
+        <product>
+            <configurable>
+                <child>
+                    <attributes>
+                        <ean />
+                        <isbn />
+                    </attributes>
+                </child>
+            </configurable>
+        </product>
         <layout>
             <updates>
                 <retailred_storefront>
