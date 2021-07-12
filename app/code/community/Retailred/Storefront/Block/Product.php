@@ -35,24 +35,43 @@ class Retailred_Storefront_Block_Product extends Mage_Core_Block_Template
         $productCode = $this->dataHelper->getConfig(Retailred_Storefront_Model_Config::XML_PATH_API_PRODUCT_CODE_MAPPING);
         $product = Mage::registry('current_product');
 
+        $identifiers = $this->dataHelper->getConfig(Retailred_Storefront_Model_Config::XML_PATH_GENERAL_PRODUCT_IDENTIFIERS);
+        if (!empty($identifiers)) {
+            $identifiers = explode(',', $identifiers);
+        }
+
         $products = [
             $product->getEntityId() => [
-                'sku' => $product->getSku(),
+                'identifiers' => [
+                    'sku' => $product->getSku(),
+                ],
                 'number' => $productCode === Retailred_Storefront_Model_Source_Productcodemapping::ID
                     ? $product->getEntityId()
                     : $product->getSku()
             ]
         ];
+        if (!empty($identifiers)) {
+            foreach ($identifiers as $identifier) {
+                $products[$product->getEntityId()]['identifiers'][$identifier] = $product->getData($identifier);
+            }
+        }
 
         if ($product->getTypeId() === 'configurable') {
             $childProducts = Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null, $product);
             foreach ($childProducts as $child) {
                 $products[$child->getEntityId()] = [
-                    'sku' => $child->getSku(),
+                    'identifiers' => [
+                        'sku' => $child->getSku(),
+                    ],
                     'number' => $productCode === Retailred_Storefront_Model_Source_Productcodemapping::ID
                         ? $child->getEntityId()
                         : $child->getSku()
                 ];
+                if (!empty($identifiers)) {
+                    foreach ($identifiers as $identifier) {
+                        $products[$child->getEntityId()]['identifiers'][$identifier] = $child->getData($identifier);
+                    }
+                }
             }
         }
 
