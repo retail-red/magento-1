@@ -45,6 +45,7 @@ class Retailred_Storefront_Block_Product extends Mage_Core_Block_Template
                 'identifiers' => [
                     'sku' => $product->getSku(),
                 ],
+                'type' => 'standard',
                 'number' => $productCode === Retailred_Storefront_Model_Source_Productcodemapping::ID
                     ? $product->getEntityId()
                     : $product->getSku()
@@ -57,12 +58,15 @@ class Retailred_Storefront_Block_Product extends Mage_Core_Block_Template
         }
 
         if ($product->getTypeId() === 'configurable') {
+            $products[$product->getEntityId()]['type'] = 'configurable';
+
             $childProducts = Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null, $product);
             foreach ($childProducts as $child) {
                 $products[$child->getEntityId()] = [
                     'identifiers' => [
                         'sku' => $child->getSku(),
                     ],
+                    'type' => 'standard',
                     'number' => $productCode === Retailred_Storefront_Model_Source_Productcodemapping::ID
                         ? $child->getEntityId()
                         : $child->getSku()
