@@ -35,7 +35,7 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
           var formField = function (fieldName) {
             return formData.filter(function (field) {
               return field.name === fieldName;
-            })[0];
+            })[0] || {};
           };
 
           var options = [];
@@ -53,10 +53,17 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
               };
             });
 
-            variantId = options.map(function (entry) {
-              return entry.value;
-            })
-              .reduce(function (acc, value) {
+            var nonEmptyOptions = options.filter(function (opt) {
+              return !!opt.value;
+            });
+
+            var processVariant = nonEmptyOptions.length > 0
+              && nonEmptyOptions.length === Object.keys(spConfig.config.attributes).length;
+
+            variantId = processVariant
+              ? options.map(function (entry) {
+                return entry.value;
+              }).reduce(function (acc, value) {
                 // Init with products from first option
                 if (acc === null) {
                   acc = value.products || [];
@@ -68,17 +75,24 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
                 }
                 return acc;
               }, null)
-              .reduce(function (r, variantId) {
-                return variantId || '';
-              }, null);
+                .reduce(function (r, variantId) {
+                  return variantId || '';
+                }, null)
+              : null;
           }
 
           var id = formField('product').value;
           var qty = formField('qty').value;
 
+          var selectedProduct = products[variantId || id];
+
           var $productView = $('.main .product-view');
           return {
-            code: products[variantId || id].number,
+            /**
+             * Do not send configurable product or auto-detected product.
+             * Only explicit user selection
+             */
+            code: selectedProduct.type === 'standard' ? selectedProduct.number : null,
             imageUrl: $productView.find('.gallery-image.visible').attr('src'),
             name: $productView.find('.product-name:first').text().trim(),
             identifiers: products[variantId || id].identifiers,
@@ -100,11 +114,11 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
 
         function initRetailred () {
           try {
-            <?php if (!$localization) : ?>
+              <?php if (!$localization) : ?>
             var localization = {};
-            <?php else : ?>
+              <?php else : ?>
             var localization = <?= $localization ?>;
-            <?php endif; ?>
+              <?php endif; ?>
 
             localization.localeCode = <?= json_encode($helper->getLocaleCode()) ?>;
             localization.countries = <?= json_encode(explode(',', $helper->getConfig(Config::XML_PATH_API_COUNTRIES))) ?>;
@@ -124,7 +138,7 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
               },
               legal: {
                 terms: <?= $terms ? json_encode($terms) : 'null' ?>,
-                privacy: <?= $privacy ? json_encode($privacy): 'null' ?>,
+                privacy: <?= $privacy ? json_encode($privacy) : 'null' ?>,
               },
               customer: {
                 code: <?= json_encode($customer->getId()) ?>,
@@ -141,9 +155,9 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
               }
             });
 
-            function updateProduct() {
+            function updateProduct () {
               retailred.updateConfig({
-                product:  getSelectedProduct(),
+                product: getSelectedProduct(),
               });
             }
 
@@ -154,6 +168,9 @@ $localization = $helper->getConfig(Config::XML_PATH_DESIGN_TRANSLATIONS);
                 },
               });
             });
+
+            $('.swatch-link').click(updateProduct);
+            $('.super-attribute-select').change(updateProduct);
 
               <?php if (!$isLiveInventory) : ?>
             retailred.renderReserveButton('#rr-reserve-button', {}, function (next) {
